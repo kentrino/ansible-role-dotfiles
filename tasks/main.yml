@@ -12,7 +12,6 @@
     dest: /tmp/dotfiles
     accept_hostkey: yes
     version: "{{dotfiles_repository_branch}}"
-    recursive: false
   register: pull_dotfiles
   when: dotfiles_exist.rc != 0
 
@@ -39,8 +38,4 @@
 
 - name: Remove dotfiles in /tmp
   command: rm -rf /tmp/dotfiles
-  when: pull_dotfiles | changed
-
-- name: git submodule update --init --recursive
-  command: git -c protocol.http.allow=always submodule update --init --recursive
   when: pull_dotfiles | changed
