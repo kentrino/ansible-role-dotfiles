@@ -42,5 +42,5 @@
   when: pull_dotfiles | changed
 
 - name: git submodule update --init --recursive
-  command: git submodule update --init --recursive
+  command: git -c protocol.http.allow=always submodule update --init --recursive
   when: pull_dotfiles | changed
