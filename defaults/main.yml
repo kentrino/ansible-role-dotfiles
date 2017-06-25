@@ -1,1 +1,3 @@
 ---
+dotfiles_repository: git@github.com:kentrino/dotfiles.git
+dotfiles_repository_branch: master

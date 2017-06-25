@@ -1,6 +1,6 @@
 galaxy_info:
   author: Kento Haneda
-  description: peco installation.
+  description: dotfiles installation.
   company: 
   license: 
     - MIT
@@ -16,5 +16,5 @@ galaxy_info:
       versions:
         - all
   galaxy_tags:
-    - peco
+    - dotfiles
 dependencies: []

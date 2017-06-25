@@ -1,1 +1,46 @@
 ---
+- name: Check dotfiles
+  command: test -e ~/.git
+  register: dotfiles_exist
+  ignore_errors: true
+  changed_when: false
+
+- name: Clone dotfiles
+  become: false
+  git:
+    repo: "{{dotfiles_repository}}"
+    dest: /tmp/dotfiles
+    accept_hostkey: yes
+    version: "{{dotfiles_repository_branch}}"
+    recursive: false
+  register: pull_dotfiles
+  when: dotfiles_exist.rc != 0
+
+- name: List files to move
+  command: ls -a /tmp/dotfiles
+  register: files_to_copy
+  when: pull_dotfiles | changed
+  ignore_errors: true
+  changed_when: false
+
+- name: Remove old dotfiles and move new dotfiles to ~/
+  shell: |
+    if [ -e ~/{{item}} ]; then
+      rm -fr ~/{{item}}
+    fi
+    mv /tmp/dotfiles/{{item}} ~/
+    
+  with_items: "{{files_to_copy.stdout_lines}}"
+  when:
+    - pull_dotfiles | changed
+    - item != ''
+    - item != '.'
+    - item != '..'
+
+- name: Remove dotfiles in /tmp
+  command: rm -rf /tmp/dotfiles
+  when: pull_dotfiles | changed
+
+- name: git submodule update --init --recursive
+  command: git submodule update --init --recursive
+  when: pull_dotfiles | changed

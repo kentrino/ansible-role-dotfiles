@@ -1,8 +1,7 @@
 Peco installation
 =========
 
-Install peco
-https://github.com/peco/peco
+Install your dotfiles
 
 Role Variables
 --------------
@@ -15,8 +14,7 @@ Example Playbook
 ```
 hosts: servers
 roles:
-   - role: kentrino.peco
-     peco_version: 0.5.1
+   - role: kentrino.dotfiles
 ```
 
 License
